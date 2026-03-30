@@ -1,0 +1,13 @@
+{
+  "repetitionPolicy": {
+    "type": "penalize",
+    "factor": 0.3
+  },
+  "datePolicy": {
+    "type": "penalty",
+    "factor": 0.1
+  },
+  "ratingFormula": {
+    "type": "weighted"
+  }
+}

@@ -1,0 +1,20 @@
+[
+  {
+    "productId": "p1",
+    "productName": "Смартфон X200",
+    "productDescription": "Мощный смартфон с отличной камерой и быстрым процессором",
+    "productCategory": "Электроника"
+  },
+  {
+    "productId": "p2",
+    "productName": "Ноутбук Pro 15",
+    "productDescription": "Лёгкий и мощный ноутбук для работы и игр",
+    "productCategory": "Электроника"
+  },
+  {
+    "productId": "p3",
+    "productName": "Беспроводные наушники SoundBuds",
+    "productDescription": "Компактные наушники с хорошим звуком",
+    "productCategory": "Аудио"
+  }
+]

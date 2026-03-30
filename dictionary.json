@@ -1,0 +1,102 @@
+[
+  {
+    "word": "отличный",
+    "sentiment": "positive",
+    "weight": 4.8
+  },
+  {
+    "word": "хороший",
+    "sentiment": "positive",
+    "weight": 4.0
+  },
+  {
+    "word": "быстрый",
+    "sentiment": "positive",
+    "weight": 4.5
+  },
+  {
+    "word": "удобный",
+    "sentiment": "positive",
+    "weight": 4.2
+  },
+  {
+    "word": "лёгкий",
+    "sentiment": "positive",
+    "weight": 4.0
+  },
+  {
+    "word": "мощный",
+    "sentiment": "positive",
+    "weight": 4.7
+  },
+  {
+    "word": "супер",
+    "sentiment": "positive",
+    "weight": 4.9
+  },
+  {
+    "word": "доволен",
+    "sentiment": "positive",
+    "weight": 4.5
+  },
+  {
+    "word": "рекомендую",
+    "sentiment": "positive",
+    "weight": 4.3
+  },
+  {
+    "word": "плохой",
+    "sentiment": "negative",
+    "weight": 1.2
+  },
+  {
+    "word": "ужасный",
+    "sentiment": "negative",
+    "weight": 0.8
+  },
+  {
+    "word": "сломался",
+    "sentiment": "negative",
+    "weight": 1.0
+  },
+  {
+    "word": "дефект",
+    "sentiment": "negative",
+    "weight": 0.9
+  },
+  {
+    "word": "брак",
+    "sentiment": "negative",
+    "weight": 0.7
+  },
+  {
+    "word": "дорого",
+    "sentiment": "negative",
+    "weight": 2.0
+  },
+  {
+    "word": "греется",
+    "sentiment": "negative",
+    "weight": 1.5
+  },
+  {
+    "word": "шумный",
+    "sentiment": "negative",
+    "weight": 1.8
+  },
+  {
+    "word": "неудобно",
+    "sentiment": "negative",
+    "weight": 1.5
+  },
+  {
+    "word": "нормально",
+    "sentiment": "neutral",
+    "weight": 2.5
+  },
+  {
+    "word": "неплохо",
+    "sentiment": "neutral",
+    "weight": 3.0
+  }
+]

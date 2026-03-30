@@ -1,0 +1,32 @@
+# Stack build artifacts
+.stack-work/
+*.log
+*.pid
+.stack-dump/
+.stack.yaml.lock
+
+# Cabal build artifacts
+dist/
+dist-newstyle/
+cabal.project.local
+*.cabal~
+*.cabal.bak
+
+# GHC artifacts
+*.hi
+*.o
+*.dyn_hi
+*.dyn_o
+
+# macOS
+.DS_Store
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*~
+
+# Output files
+defects.json
+results.json
