@@ -24,8 +24,8 @@ module Lib
     ) where
 
 import System.Directory (doesFileExist)
-import Data.List (find, nub, sortBy, maximumBy, isInfixOf)
-import Data.Char (toLower)
+import Data.List (find, nub, sortBy, maximumBy, isInfixOf, isSuffixOf)
+import Data.Char (toLower, isPunctuation)
 import Data.Maybe (catMaybes, fromMaybe)
 import Data.Function (on)
 import qualified Data.Map as Map
@@ -200,13 +200,13 @@ instance FromJSON Review where
            <*> v .: "sentiment"
 
 instance ToJSON Review where
-  toJSON (Review rid pid author date text sentiment) = object
+  toJSON (Review rid pid author date text revSentiment) = object
     [ "reviewId" .= rid
     , "productId" .= pid
     , "author" .= author
     , "date" .= date
     , "text" .= text
-    , "sentiment" .= sentiment
+    , "sentiment" .= revSentiment
     ]
 
 instance ToJSON DefectDictionary where
@@ -320,7 +320,9 @@ loadDictionary file = do
             let duplicates = findDuplicates $ map word dict
              in if null duplicates
                 then return $ Right $ SentimentDictionary dict
-                else return $ Left $ DuplicateWord $ head duplicates
+                else case duplicates of
+                    (d:_) -> return $ Left $ DuplicateWord d
+                    [] -> return $ Left $ ParseError "Unexpected empty duplicates list"
 
 loadRules :: String -> IO (Either AnalysisError EvaluationRules)
 loadRules = loadJsonFile
@@ -334,6 +336,60 @@ saveDefectDictionary filename (DefectDictionary defectList) = do
 -- функции
 --------------------------------------------------
 
+cleanWord :: String -> String
+cleanWord = filter (not . isPunctuation)
+
+wordStem :: String -> String
+wordStem = stemWord . cleanWord
+  where
+    stemWord w
+        | "ться" `isSuffixOf` w = take (length w - 4) w
+        | "тся" `isSuffixOf` w = take (length w - 3) w
+        | "лся" `isSuffixOf` w = take (length w - 3) w
+        | "лась" `isSuffixOf` w = take (length w - 4) w
+        | "лось" `isSuffixOf` w = take (length w - 4) w
+        | "лись" `isSuffixOf` w = take (length w - 4) w
+        | "л" `isSuffixOf` w = take (length w - 1) w
+        | "ла" `isSuffixOf` w = take (length w - 2) w
+        | "ло" `isSuffixOf` w = take (length w - 2) w
+        | "ли" `isSuffixOf` w = take (length w - 2) w
+        | "ого" `isSuffixOf` w = take (length w - 3) w
+        | "его" `isSuffixOf` w = take (length w - 3) w
+        | "ому" `isSuffixOf` w = take (length w - 3) w
+        | "ему" `isSuffixOf` w = take (length w - 3) w
+        | "ым" `isSuffixOf` w = take (length w - 2) w
+        | "им" `isSuffixOf` w = take (length w - 2) w
+        | "ой" `isSuffixOf` w = take (length w - 2) w
+        | "ей" `isSuffixOf` w = take (length w - 2) w
+        | "ая" `isSuffixOf` w = take (length w - 2) w
+        | "яя" `isSuffixOf` w = take (length w - 2) w
+        | "ен" `isSuffixOf` w = take (length w - 2) w
+        | "на" `isSuffixOf` w = take (length w - 2) w
+        | "ое" `isSuffixOf` w = take (length w - 2) w
+        | "ие" `isSuffixOf` w = take (length w - 2) w
+        | "ые" `isSuffixOf` w = take (length w - 2) w
+        | "ый" `isSuffixOf` w = take (length w - 2) w
+        | "ий" `isSuffixOf` w = take (length w - 2) w
+        | "ами" `isSuffixOf` w = take (length w - 3) w
+        | "ов" `isSuffixOf` w = take (length w - 2) w
+        | "ев" `isSuffixOf` w = take (length w - 2) w
+        | "ем" `isSuffixOf` w = take (length w - 2) w
+        | "ом" `isSuffixOf` w = take (length w - 2) w
+        | "ах" `isSuffixOf` w = take (length w - 2) w
+        | "ях" `isSuffixOf` w = take (length w - 2) w
+        | "ам" `isSuffixOf` w = take (length w - 2) w
+        | "ям" `isSuffixOf` w = take (length w - 2) w
+        | "у" `isSuffixOf` w = take (length w - 1) w
+        | "ю" `isSuffixOf` w = take (length w - 1) w
+        | "е" `isSuffixOf` w = take (length w - 1) w
+        | "и" `isSuffixOf` w = take (length w - 1) w
+        | "о" `isSuffixOf` w = take (length w - 1) w
+        | "ы" `isSuffixOf` w = take (length w - 1) w
+        | "ь" `isSuffixOf` w = take (length w - 1) w
+        | "я" `isSuffixOf` w = take (length w - 1) w
+        | "а" `isSuffixOf` w = take (length w - 1) w
+        | otherwise = w
+
 findDuplicates :: Eq a => [a] -> [a]
 findDuplicates [] = []
 findDuplicates (x:xs) = if x `elem` xs then x : findDuplicates (filter (/= x) xs) else findDuplicates xs
@@ -346,7 +402,7 @@ getWordWeight (SentimentDictionary dict) w =
     case find (\ww -> word ww == w) dict of
         Just ww -> case sentiment ww of
             Positive -> Just (weight ww)
-            Negative -> Just (5 - weight ww)
+            Negative -> Just (weight ww)
             Neutral -> Just 2.5
         Nothing -> Nothing
 
@@ -365,111 +421,186 @@ parseDate str =
     split _ "" = []
     split sep s =
         let (a, b) = break (== sep) s
-         in a : if null b then [] else split sep (tail b)
+         in a : if null b then [] else split sep (drop 1 b)
 
-    isValidDate year month day =
-        year >= 1900 && year <= 2100 &&
-        month >= 1 && month <= 12 &&
-        day >= 1 && day <= daysInMonth year month
+    isValidDate y m d =
+        y >= 1900 && y <= 2100 &&
+        m >= 1 && m <= 12 &&
+        d >= 1 && d <= daysInMonth y m
 
-    daysInMonth year month =
-        case month of
-            2 -> if isLeapYear year then 29 else 28
+    daysInMonth y m =
+        case m of
+            2 -> if isLeapYear y then 29 else 28
             4 -> 30
             6 -> 30
             9 -> 30
             11 -> 30
             _ -> 31
 
-    isLeapYear year =
-        (year `mod` 400 == 0) || (year `mod` 4 == 0 && year `mod` 100 /= 0)
+    isLeapYear y =
+        (y `mod` 400 == 0) || (y `mod` 4 == 0 && y `mod` 100 /= 0)
+
+extractWordsWithStems :: Review -> ([String], [String])
+extractWordsWithStems r = 
+    let originalWords = map (map toLower . cleanWord) $ words (reviewText r)
+        stemmedWords = map wordStem originalWords
+     in (originalWords, stemmedWords)
 
 evaluateReview :: EvaluationRules -> SentimentDictionary -> DefectDictionary -> Review -> Double
 evaluateReview rules dict _ review = 
-    let wordsList = map (map toLower) $ words (reviewText review)
-        wordFreq = countWordFrequencies wordsList
-        baseScore = calculateBaseScore dict wordsList
-        repFactor = applyRepetition (repetitionPolicy rules) wordFreq
-        dateFactor = applyDate (datePolicy rules) (reviewDate review)
-     in max 0 $ min 5 $ baseScore * repFactor * dateFactor
-  where
-    calculateBaseScore dict' ws = 
-        let scores = catMaybes $ map (getWordWeight dict') ws
-         in if null scores then 2.5 else sum scores / fromIntegral (length scores)
-    
-    applyRepetition IgnoreRepetition _ = 1.0
-    applyRepetition (PenalizeRepetition f) freq =
-        let total = sum $ Map.elems freq
-            maxF = maximum $ Map.elems freq
-         in max 0.3 $ 1.0 - (fromIntegral maxF / fromIntegral total) * f
-    applyRepetition (LimitRepetition l) freq =
-        let limited = sum $ map (min l) $ Map.elems freq
-            original = sum $ Map.elems freq
-         in if original > 0 then fromIntegral limited / fromIntegral original else 1.0
-    
-    applyDate IgnoreDate _ = 1.0
-    applyDate (DatePenalty f) dateStr =
-        case parseDate dateStr of
-            Just d -> max 0.1 $ 1.0 - (fromIntegral (2026 - year d) / 10.0) * f
-            Nothing -> 1.0
+    let (_, stemmedWords) = extractWordsWithStems review
+        wordFreq = countWordFrequencies stemmedWords
+        baseScore = computeBaseScore dict stemmedWords
+        repPol = repetitionPolicy rules
+        datePol = datePolicy rules
+        repFactor = applyRepetitionPolicy repPol wordFreq
+        dateFactor = applyDatePolicy datePol (reviewDate review)
+     in clampToBounds $ baseScore * repFactor * dateFactor
+
+computeBaseScore :: SentimentDictionary -> [String] -> Double
+computeBaseScore dict ws = 
+    let scores = catMaybes $ map (getWordWeight dict) ws
+     in if null scores then 2.5 else calculateMean scores
+
+calculateMean :: [Double] -> Double
+calculateMean xs = sum xs / fromIntegral (length xs)
+
+applyRepetitionPolicy :: RepetitionPolicy -> Map.Map String Int -> Double
+applyRepetitionPolicy IgnoreRepetition _ = 1.0
+applyRepetitionPolicy (PenalizeRepetition f) freq = penalizeByFrequency f freq
+applyRepetitionPolicy (LimitRepetition l) freq = limitByCount l freq
+
+penalizeByFrequency :: Double -> Map.Map String Int -> Double
+penalizeByFrequency f freq =
+    let total = sum $ Map.elems freq
+        maxFreq = maximum $ Map.elems freq
+     in max 0.3 $ 1.0 - (fromIntegral maxFreq / fromIntegral total) * f
+
+limitByCount :: Int -> Map.Map String Int -> Double
+limitByCount l freq =
+    let limited = sum $ map (min l) $ Map.elems freq
+        original = sum $ Map.elems freq
+     in if original > 0 then fromIntegral limited / fromIntegral original else 1.0
+
+applyDatePolicy :: DatePolicy -> String -> Double
+applyDatePolicy IgnoreDate _ = 1.0
+applyDatePolicy (DatePenalty f) dateStr = penalizeByAge f dateStr
+
+penalizeByAge :: Double -> String -> Double
+penalizeByAge f dateStr =
+    case parseDate dateStr of
+        Just d -> computeAgePenalty f d
+        Nothing -> 1.0
+
+computeAgePenalty :: Double -> Date -> Double
+computeAgePenalty f d = 
+    let age = 2026 - year d
+     in max 0.1 $ 1.0 - (fromIntegral age / 10.0) * f
+
+clampToBounds :: Double -> Double
+clampToBounds x = max 0 $ min 5 x
 
 buildDefectDict :: [Review] -> DefectDictionary
 buildDefectDict reviews = 
-    let keywords = ["брак", "дефект", "сломал", "не работает", "поломка", "сломан"]
-        isDefect text = any (`isInfixOf` map toLower text) keywords
+    let defectKeywords = ["брак", "дефект", "слом", "полом", "глюч", "завис", "бит", "трещин"]
+        isDefect text = let lowerText = map toLower text
+                        in any (`isInfixOf` lowerText) defectKeywords
      in DefectDictionary $ nub $ map reviewProduct $ filter (isDefect . reviewText) reviews
 
 groupReviews :: [Review] -> Map.Map String [Review]
 groupReviews = foldr (\r -> Map.insertWith (++) (reviewProduct r) [r]) Map.empty
 
 analyzeProduct :: EvaluationRules -> SentimentDictionary -> DefectDictionary -> Product -> [Review] -> Either AnalysisError ProductRating
-analyzeProduct rules dict defectDict product reviews = 
-    if null reviews
-        then Left $ ProductNotFound (productId product)
-        else Right $ ProductRating
-            { ratedProduct = product
-            , reviewCount = length reviews
-            , overallScore = calcScore reviews
-            , positiveHighlights = extract Positive reviews dict
-            , negativeHighlights = extract Negative reviews dict
-            , mostHelpfulReview = findBest reviews
-            }
+analyzeProduct rules dict defectDict prod reviews
+    | null reviews = Left $ ProductNotFound (productId prod)
+    | otherwise = Right $ buildProductRating prod reviews rules dict defectDict
+
+buildProductRating :: Product -> [Review] -> EvaluationRules -> SentimentDictionary -> DefectDictionary -> ProductRating
+buildProductRating prod reviews rules dict defectDict = ProductRating
+    { ratedProduct = prod
+    , reviewCount = length reviews
+    , overallScore = computeOverallScore reviews rules dict defectDict
+    , positiveHighlights = extractKeywords Positive reviews dict
+    , negativeHighlights = extractKeywords Negative reviews dict
+    , mostHelpfulReview = findTopReview reviews rules dict defectDict
+    }
+
+computeOverallScore :: [Review] -> EvaluationRules -> SentimentDictionary -> DefectDictionary -> Double
+computeOverallScore rs rules dict defectDict = 
+    let sorted = sortReviewsIfWeighted rs rules
+        scores = map (\r -> evaluateReview rules dict defectDict r) sorted
+     in applyRatingFormula (ratingFormula rules) scores
+
+sortReviewsIfWeighted :: [Review] -> EvaluationRules -> [Review]
+sortReviewsIfWeighted rs rules = 
+    case ratingFormula rules of
+        Weighted -> sortByDateDesc rs
+        _ -> rs
+
+sortByDateDesc :: [Review] -> [Review]
+sortByDateDesc = sortBy (flip compareDates `on` reviewDate)
+
+compareDates :: String -> String -> Ordering
+compareDates d1 d2 =
+    case (parseDate d1, parseDate d2) of
+        (Just a, Just b) -> compare a b
+        _ -> EQ
+
+applyRatingFormula :: RatingFormula -> [Double] -> Double
+applyRatingFormula Average scores = arithmeticMean scores
+applyRatingFormula Weighted scores = weightedMean scores
+applyRatingFormula (Bayesian m) scores = bayesianMean m scores
+
+arithmeticMean :: [Double] -> Double
+arithmeticMean scores = sum scores / fromIntegral (length scores)
+
+weightedMean :: [Double] -> Double
+weightedMean scores = 
+    let weights = generateWeights (length scores)
+     in sum (zipWith (*) scores weights) / sum weights
+
+generateWeights :: Int -> [Double]
+generateWeights n = take n $ [1.0, 0.9, 0.8, 0.7, 0.6] ++ repeat 0.5
+
+bayesianMean :: Double -> [Double] -> Double
+bayesianMean m scores = (sum scores + m * 2.5) / (fromIntegral (length scores) + m)
+
+extractKeywords :: Sentiment -> [Review] -> SentimentDictionary -> [String]
+extractKeywords target rs dict = take 3 $ findTopWordsBySentiment target rs dict
+
+findTopWordsBySentiment :: Sentiment -> [Review] -> SentimentDictionary -> [String]
+findTopWordsBySentiment target rs dict = 
+    let allReviewsData = map extractWordsWithStems rs
+        allOriginalWords = concatMap fst allReviewsData
+        allStemmedWords = concatMap snd allReviewsData
+        
+        wordStemPairs = zip allOriginalWords allStemmedWords
+        
+        wordSentiments = [(w, getStemSentiment stem dict) | (w, stem) <- wordStemPairs]
+        
+        filtered = filter ((== target) . snd) wordSentiments
+        
+        freqMap = Map.fromListWith (+) [(w, 1) | (w, _) <- filtered]
+        
+        sorted = sortDescendingBySecond (Map.toList freqMap)
+        
+        topWords = take 3 $ map fst sorted
+     in topWords
   where
-    compareDates date1 date2 =
-        case (parseDate date1, parseDate date2) of
-            (Just d1, Just d2) -> compare d1 d2
-            _ -> EQ
-    
-    sortByDateDesc = sortBy (flip compareDates `on` reviewDate)
-    
-    calcScore rs = 
-        let sortedRs = case ratingFormula rules of
-                Weighted -> sortByDateDesc rs
-                _ -> rs
-            scores = map (evaluateReview rules dict defectDict) sortedRs
-            n = fromIntegral $ length scores
-         in case ratingFormula rules of
-                Average -> sum scores / n
-                Weighted -> 
-                    let ws = [1.0, 0.9, 0.8, 0.7, 0.6] ++ repeat 0.5
-                     in sum (zipWith (*) scores ws) / sum (take (length scores) ws)
-                Bayesian m -> (sum scores + m * 2.5) / (n + m)
-    
-    extract targetSentiment rs (SentimentDictionary dict') = 
-        let allWords = concatMap (words . map toLower . reviewText) rs
-            uniq = nub allWords
-            wordSent = [(w, getSentiment' w) | w <- uniq]
-            filtered = filter ((== targetSentiment) . snd) wordSent
-            top = take 3 $ map fst $ sortBy (flip compare `on` snd) 
-                  [(w, length $ filter (== w) allWords) | w <- map fst filtered]
-         in top
-      where
-        getSentiment' w = maybe Neutral sentiment $ find ((== w) . word) dict'
-    
-    findBest rs = 
-        let scored = zip rs $ map (evaluateReview rules dict defectDict) rs
-            best = maximumBy (compare `on` snd) scored
-         in reviewText $ fst best
+    getStemSentiment :: String -> SentimentDictionary -> Sentiment
+    getStemSentiment stem (SentimentDictionary dict') = 
+        case find (\ww -> word ww == stem) dict' of
+            Just ww -> sentiment ww
+            Nothing -> Neutral
+
+sortDescendingBySecond :: [(a, Int)] -> [(a, Int)]
+sortDescendingBySecond = sortBy (flip compare `on` snd)
+
+findTopReview :: [Review] -> EvaluationRules -> SentimentDictionary -> DefectDictionary -> String
+findTopReview rs rules dict defectDict = 
+    let withScores = zip rs $ map (\r -> evaluateReview rules dict defectDict r) rs
+        best = maximumBy (compare `on` snd) withScores
+     in reviewText $ fst best
 
 saveResults :: String -> [ProductRating] -> IO (Either AnalysisError ())
 saveResults file ratings = do

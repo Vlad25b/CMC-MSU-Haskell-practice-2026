@@ -1,4 +1,4 @@
-module Main where
+module Main (main) where
 
 import Lib
 import System.Environment (getArgs)
@@ -10,8 +10,8 @@ main :: IO ()
 main = do
     args <- getArgs
     case args of
-        [prodFile, revFile, dictFile, rulesFile, defectOutFile, outFile] ->
-            runProgram prodFile revFile dictFile rulesFile defectOutFile outFile
+        [prodFile, revFile, dictFile, ruleFile, defectOutFile, outFile] ->
+            runProgram prodFile revFile dictFile ruleFile defectOutFile outFile
         
         _ -> do
             putStrLn "=== Review Analysis Program ==="
@@ -20,17 +20,17 @@ main = do
             runInteractiveMode
 
 runProgram :: String -> String -> String -> String -> String -> String -> IO ()
-runProgram prodFile revFile dictFile rulesFile defectOutFile outFile = do
+runProgram prodFile revFile dictFile ruleFile defectOutFile outFile = do
     putStrLn "=== Review Analysis Program ==="
     putStrLn $ "Products file: " ++ prodFile
     putStrLn $ "Reviews file: " ++ revFile
     putStrLn $ "Dictionary file: " ++ dictFile
-    putStrLn $ "Rules file: " ++ rulesFile
+    putStrLn $ "Rules file: " ++ ruleFile
     putStrLn $ "Defect dictionary output: " ++ defectOutFile
     putStrLn $ "Results output file: " ++ outFile
     putStrLn ""
     
-    let inputFiles = InputFiles prodFile revFile dictFile rulesFile defectOutFile
+    let inputFiles = InputFiles prodFile revFile dictFile ruleFile defectOutFile
     executeAnalysis inputFiles outFile
 
 runInteractiveMode :: IO ()
@@ -41,7 +41,7 @@ runInteractiveMode = do
     prodFile <- askFile "Products file" "products.json"
     revFile <- askFile "Reviews file" "reviews.json"
     dictFile <- askFile "Dictionary file" "dictionary.json"
-    rulesFile <- askFile "Rules file" "rules.json"
+    ruleFile <- askFile "Rules file" "rules.json"
     defectOutFile <- askFile "Defect dictionary output file" "defects.json"
     outFile <- askFile "Results output file" "results.json"
     
@@ -49,7 +49,7 @@ runInteractiveMode = do
     putStrLn "Starting analysis"
     putStrLn ""
     
-    let inputFiles = InputFiles prodFile revFile dictFile rulesFile defectOutFile
+    let inputFiles = InputFiles prodFile revFile dictFile ruleFile defectOutFile
     executeAnalysis inputFiles outFile
 
 askFile :: String -> String -> IO String

@@ -1,31 +1,36 @@
 [
   {
-    "word": "отличный",
+    "word": "отличн",
     "sentiment": "positive",
     "weight": 4.8
   },
   {
-    "word": "хороший",
+    "word": "хорош",
     "sentiment": "positive",
     "weight": 4.0
   },
   {
-    "word": "быстрый",
+    "word": "быстр",
     "sentiment": "positive",
     "weight": 4.5
   },
   {
-    "word": "удобный",
+    "word": "приятн",
     "sentiment": "positive",
     "weight": 4.2
   },
   {
-    "word": "лёгкий",
+    "word": "удобн",
+    "sentiment": "positive",
+    "weight": 4.2
+  },
+  {
+    "word": "легк",
     "sentiment": "positive",
     "weight": 4.0
   },
   {
-    "word": "мощный",
+    "word": "мощн",
     "sentiment": "positive",
     "weight": 4.7
   },
@@ -35,27 +40,172 @@
     "weight": 4.9
   },
   {
+    "word": "довольн",
+    "sentiment": "positive",
+    "weight": 4.5
+  },
+  {
     "word": "доволен",
     "sentiment": "positive",
     "weight": 4.5
   },
   {
-    "word": "рекомендую",
+    "word": "рекоменд",
     "sentiment": "positive",
     "weight": 4.3
   },
   {
-    "word": "плохой",
-    "sentiment": "negative",
-    "weight": 1.2
+    "word": "превосходн",
+    "sentiment": "positive",
+    "weight": 5.0
   },
   {
-    "word": "ужасный",
+    "word": "великолепн",
+    "sentiment": "positive",
+    "weight": 4.9
+  },
+  {
+    "word": "замечательн",
+    "sentiment": "positive",
+    "weight": 4.7
+  },
+  {
+    "word": "классн",
+    "sentiment": "positive",
+    "weight": 4.5
+  },
+  {
+    "word": "крут",
+    "sentiment": "positive",
+    "weight": 4.6
+  },
+  {
+    "word": "шикарн",
+    "sentiment": "positive",
+    "weight": 4.9
+  },
+  {
+    "word": "топов",
+    "sentiment": "positive",
+    "weight": 4.8
+  },
+  {
+    "word": "качественн",
+    "sentiment": "positive",
+    "weight": 4.4
+  },
+  {
+    "word": "надёжн",
+    "sentiment": "positive",
+    "weight": 4.5
+  },
+  {
+    "word": "работа",
+    "sentiment": "positive",
+    "weight": 3.8
+  },
+  {
+    "word": "стильн",
+    "sentiment": "positive",
+    "weight": 4.0
+  },
+  {
+    "word": "красив",
+    "sentiment": "positive",
+    "weight": 4.1
+  },
+  {
+    "word": "ярк",
+    "sentiment": "positive",
+    "weight": 4.0
+  },
+  {
+    "word": "чётк",
+    "sentiment": "positive",
+    "weight": 4.2
+  },
+  {
+    "word": "плавн",
+    "sentiment": "positive",
+    "weight": 4.0
+  },
+  {
+    "word": "тих",
+    "sentiment": "positive",
+    "weight": 3.8
+  },
+  {
+    "word": "бесшумн",
+    "sentiment": "positive",
+    "weight": 4.0
+  },
+  {
+    "word": "дешев",
+    "sentiment": "positive",
+    "weight": 4.0
+  },
+  {
+    "word": "бит",
+    "sentiment": "negative",
+    "weight": 1.0
+  },
+  {
+    "word": "эргономичн",
+    "sentiment": "positive",
+    "weight": 4.3
+  },
+  {
+    "word": "интуитивн",
+    "sentiment": "positive",
+    "weight": 4.2
+  },
+  {
+    "word": "производительн",
+    "sentiment": "positive",
+    "weight": 4.6
+  },
+  {
+    "word": "достойн",
+    "sentiment": "positive",
+    "weight": 4.0
+  },
+  {
+    "word": "компактн",
+    "sentiment": "positive",
+    "weight": 3.8
+  },
+  {
+    "word": "полезн",
+    "sentiment": "positive",
+    "weight": 3.9
+  },
+  {
+    "word": "полом",
     "sentiment": "negative",
     "weight": 0.8
   },
   {
-    "word": "сломался",
+    "word": "эффективн",
+    "sentiment": "positive",
+    "weight": 4.3
+  },
+  {
+    "word": "плох",
+    "sentiment": "negative",
+    "weight": 1.2
+  },
+  {
+    "word": "ужасн",
+    "sentiment": "negative",
+    "weight": 0.8
+  },
+  {
+    "word": "слома",
+    "sentiment": "negative",
+    "weight": 1.0
+  },
+  {
+    "word": "слаб",
     "sentiment": "negative",
     "weight": 1.0
   },
@@ -70,33 +220,138 @@
     "weight": 0.7
   },
   {
-    "word": "дорого",
+    "word": "дорог",
     "sentiment": "negative",
     "weight": 2.0
   },
   {
-    "word": "греется",
+    "word": "грее",
     "sentiment": "negative",
     "weight": 1.5
   },
   {
-    "word": "шумный",
+    "word": "шумн",
     "sentiment": "negative",
     "weight": 1.8
   },
   {
-    "word": "неудобно",
+    "word": "неудобн",
     "sentiment": "negative",
     "weight": 1.5
   },
   {
-    "word": "нормально",
+    "word": "отвратительн",
+    "sentiment": "negative",
+    "weight": 0.5
+  },
+  {
+    "word": "некачественн",
+    "sentiment": "negative",
+    "weight": 1.0
+  },
+  {
+    "word": "хлипк",
+    "sentiment": "negative",
+    "weight": 1.2
+  },
+  {
+    "word": "глюч",
+    "sentiment": "negative",
+    "weight": 1.3
+  },
+  {
+    "word": "тормоз",
+    "sentiment": "negative",
+    "weight": 1.4
+  },
+  {
+    "word": "завис",
+    "sentiment": "negative",
+    "weight": 1.3
+  },
+  {
+    "word": "медленн",
+    "sentiment": "negative",
+    "weight": 1.5
+  },
+  {
+    "word": "тяжел",
+    "sentiment": "negative",
+    "weight": 2.2
+  },
+  {
+    "word": "громк",
+    "sentiment": "negative",
+    "weight": 1.8
+  },
+  {
+    "word": "холодн",
+    "sentiment": "negative",
+    "weight": 2.0
+  },
+  {
+    "word": "горяч",
+    "sentiment": "negative",
+    "weight": 1.8
+  },
+  {
+    "word": "некрасив",
+    "sentiment": "negative",
+    "weight": 2.0
+  },
+  {
+    "word": "устарел",
+    "sentiment": "negative",
+    "weight": 2.0
+  },
+  {
+    "word": "разочарова",
+    "sentiment": "negative",
+    "weight": 1.5
+  },
+  {
+    "word": "нормальн",
     "sentiment": "neutral",
     "weight": 2.5
   },
   {
-    "word": "неплохо",
+    "word": "неплох",
     "sentiment": "neutral",
     "weight": 3.0
+  },
+  {
+    "word": "средн",
+    "sentiment": "neutral",
+    "weight": 2.5
+  },
+  {
+    "word": "обычн",
+    "sentiment": "neutral",
+    "weight": 2.5
+  },
+  {
+    "word": "стандартн",
+    "sentiment": "neutral",
+    "weight": 2.5
+  },
+  {
+    "word": "сносн",
+    "sentiment": "neutral",
+    "weight": 2.5
+  },
+  {
+    "word": "терпим",
+    "sentiment": "neutral",
+    "weight": 2.3
+  },
+  {
+    "word": "никак",
+    "sentiment": "neutral",
+    "weight": 2.2
+  },
+  {
+    "word": "подход",
+    "sentiment": "neutral",
+    "weight": 2.8
   }
 ]

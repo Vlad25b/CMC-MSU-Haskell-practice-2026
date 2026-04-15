@@ -16,5 +16,137 @@
     "productName": "Беспроводные наушники SoundBuds",
     "productDescription": "Компактные наушники с хорошим звуком",
     "productCategory": "Аудио"
+  },
+  {
+    "productId": "p4",
+    "productName": "Умные часы Watch X",
+    "productDescription": "Водонепроницаемые умные часы с GPS и мониторингом здоровья",
+    "productCategory": "Электроника"
+  },
+  {
+    "productId": "p5",
+    "productName": "Планшет Tab Ultra",
+    "productDescription": "11-дюймовый планшет с ярким дисплеем и стилусом в комплекте",
+    "productCategory": "Электроника"
+  },
+  {
+    "productId": "p6",
+    "productName": "Игровая мышь Phantom",
+    "productDescription": "Эргономичная игровая мышь с RGB-подсветкой и 6 программируемыми кнопками",
+    "productCategory": "Компьютерные аксессуары"
+  },
+  {
+    "productId": "p7",
+    "productName": "Механическая клавиатура Clicker",
+    "productDescription": "Механическая клавиатура с переключателями Brown и подсветкой",
+    "productCategory": "Компьютерные аксессуары"
+  },
+  {
+    "productId": "p8",
+    "productName": "Монитор Curve 27",
+    "productDescription": "27-дюймовый изогнутый монитор с разрешением 2K и частотой 144Hz",
+    "productCategory": "Электроника"
+  },
+  {
+    "productId": "p9",
+    "productName": "Робот-пылесос CleanBot",
+    "productDescription": "Умный робот-пылесос с навигацией и функцией влажной уборки",
+    "productCategory": "Бытовая техника"
+  },
+  {
+    "productId": "p10",
+    "productName": "Электрическая зубная щётка SmilePro",
+    "productDescription": "Звуковая зубная щётка с 5 режимами и таймером",
+    "productCategory": "Бытовая техника"
+  },
+  {
+    "productId": "p11",
+    "productName": "Кофемашина EspressoHome",
+    "productDescription": "Автоматическая кофемашина для приготовления эспрессо и капучино",
+    "productCategory": "Бытовая техника"
+  },
+  {
+    "productId": "p12",
+    "productName": "Фитнес-браслет ActiveBand",
+    "productDescription": "Фитнес-трекер с пульсометром и шагомером",
+    "productCategory": "Спорт и здоровье"
+  },
+  {
+    "productId": "p13",
+    "productName": "Беговая дорожка RunFast",
+    "productDescription": "Складная беговая дорожка с 12 программами тренировок",
+    "productCategory": "Спорт и здоровье"
+  },
+  {
+    "productId": "p14",
+    "productName": "Йога-коврик EcoMat",
+    "productDescription": "Экологичный нескользящий коврик для йоги толщиной 6 мм",
+    "productCategory": "Спорт и здоровье"
+  },
+  {
+    "productId": "p15",
+    "productName": "Набор гантелей DumbbellSet",
+    "productDescription": "Регулируемые гантели от 2 до 20 кг в комплекте со стойкой",
+    "productCategory": "Спорт и здоровье"
+  },
+  {
+    "productId": "p16",
+    "productName": "Стул компьютерный ErgoChair",
+    "productDescription": "Эргономичный компьютерный стул с поясничной поддержкой",
+    "productCategory": "Мебель"
+  },
+  {
+    "productId": "p17",
+    "productName": "Письменный стол DeskPro",
+    "productDescription": "Регулируемый по высоте письменный стол с электрическим приводом",
+    "productCategory": "Мебель"
+  },
+  {
+    "productId": "p18",
+    "productName": "Светодиодная лента RGBStrip",
+    "productDescription": "Умная светодиодная лента с пультом и управлением через приложение",
+    "productCategory": "Дом и интерьер"
+  },
+  {
+    "productId": "p19",
+    "productName": "Увлажнитель воздуха HumidAir",
+    "productDescription": "Ультразвуковой увлажнитель воздуха с аромакапсулой",
+    "productCategory": "Бытовая техника"
+  },
+  {
+    "productId": "p20",
+    "productName": "Внешний аккумулятор PowerBank 20000",
+    "productDescription": "Ёмкий внешний аккумулятор с быстрой зарядкой и двумя портами USB",
+    "productCategory": "Электроника"
+  },
+  {
+    "productId": "p21",
+    "productName": "Карта памяти MicroSD 256GB",
+    "productDescription": "Быстрая карта памяти класса U3 для смартфонов и камер",
+    "productCategory": "Электроника"
+  },
+  {
+    "productId": "p22",
+    "productName": "Чехол для ноутбука SoftCase",
+    "productDescription": "Мягкий защитный чехол для ноутбука 15.6 дюймов",
+    "productCategory": "Компьютерные аксессуары"
+  },
+  {
+    "productId": "p23",
+    "productName": "Книга 'Искусство программирования'",
+    "productDescription": "Классическая книга по алгоритмам и структурам данных",
+    "productCategory": "Книги"
+  },
+  {
+    "productId": "p24",
+    "productName": "Набор отверток PrecisionTools",
+    "productDescription": "Набор мини-отверток для ремонта электроники",
+    "productCategory": "Инструменты"
+  },
+  {
+    "productId": "p25",
+    "productName": "Фотоаппарат ZoomCam",
+    "productDescription": "Беззеркальная камера с 24-мегапиксельным сенсором",
+    "productCategory": "Электроника"
   }
 ]
