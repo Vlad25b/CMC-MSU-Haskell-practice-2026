@@ -3,8 +3,6 @@ module Main (main) where
 import Lib
 import System.Environment (getArgs)
 import System.IO (hFlush, stdout, hPutStrLn, stderr)
-import System.Exit (exitFailure)
-import Text.Printf (printf)
 
 main :: IO ()
 main = do
@@ -68,14 +66,12 @@ executeAnalysis inputFiles outFile = do
     case result of
         Left err -> do
             hPutStrLn stderr $ "Error during analysis: " ++ show err
-            exitFailure
         
         Right ratings -> do
             saveResult <- saveResults outFile ratings
             case saveResult of
                 Left err -> do
                     hPutStrLn stderr $ "Error saving results: " ++ show err
-                    exitFailure
                 Right () -> do
                     putStrLn ""
                     putStrLn "========================================"
@@ -96,9 +92,10 @@ executeAnalysis inputFiles outFile = do
 printSummary :: ProductRating -> IO ()
 printSummary rating = do
     let score = overallScore rating
+        roundedScore = (fromIntegral (round (score * 100.0)) / (100.0 :: Double)) :: Double
         stars = replicate (round score) '*'
         name = productName (ratedProduct rating)
-    putStrLn $ "  " ++ name ++ ": " ++ printf "%.2f" score ++ "/5 " ++ stars
+    putStrLn $ "  " ++ name ++ ": " ++ show roundedScore ++ "/5 " ++ stars
     putStrLn $ "    Reviews: " ++ show (reviewCount rating)
     putStrLn $ "    Positive: " ++ unwords (take 3 $ positiveHighlights rating)
     if not (null (negativeHighlights rating))
