@@ -26,13 +26,13 @@ import Text.Printf (printf)
 --------------------------------------------------
 
 instance FromJSON Date where
-  parseJSON = withText "Date" $ \t ->
+  parseJSON = withText "Date" $ \t -> do
     case parseDate (T.unpack t) of
       Just d  -> return d
       Nothing -> fail "Invalid date format, expected YYYY-MM-DD"
 
 instance FromJSON Sentiment where
-  parseJSON = withText "Sentiment" $ \t ->
+  parseJSON = withText "Sentiment" $ \t -> do
     case T.unpack t of
       "positive" -> return Positive
       "negative" -> return Negative
@@ -45,26 +45,29 @@ instance ToJSON Sentiment where
   toJSON Neutral  = "neutral"
 
 instance FromJSON WordWeight where
-  parseJSON = withObject "WordWeight" $ \v ->
-    WordWeight <$> v .: "word"
-               <*> v .: "sentiment"
-               <*> v .: "weight"
+  parseJSON = withObject "WordWeight" $ \v -> do
+    w <- v .: "word"
+    s <- v .: "sentiment"
+    wt <- v .: "weight"
+    return $ WordWeight w s wt
 
 instance FromJSON Product where
-  parseJSON = withObject "Product" $ \v ->
-    Product <$> v .: "productId"
-            <*> v .: "productName"
-            <*> v .: "productDescription"
-            <*> v .: "productCategory"
+  parseJSON = withObject "Product" $ \v -> do
+    pid <- v .: "productId"
+    pname <- v .: "productName"
+    pdesc <- v .: "productDescription"
+    pcat <- v .: "productCategory"
+    return $ Product pid pname pdesc pcat
 
 instance FromJSON Review where
-  parseJSON = withObject "Review" $ \v ->
-    Review <$> v .: "reviewId"
-           <*> v .: "productId"
-           <*> v .: "author"
-           <*> v .: "date"
-           <*> v .: "text"
-           <*> v .: "sentiment"
+  parseJSON = withObject "Review" $ \v -> do
+    rid <- v .: "reviewId"
+    pid <- v .: "productId"
+    auth <- v .: "author"
+    d <- v .: "date"
+    txt <- v .: "text"
+    sent <- v .: "sentiment"
+    return $ Review rid pid auth d txt sent
 
 instance ToJSON DefectDictionary where
   toJSON (DefectDictionary defects) = toJSON defects
@@ -73,33 +76,42 @@ instance FromJSON RepetitionPolicy where
   parseJSON = withObject "RepetitionPolicy" $ \v -> do
     typ <- v .: "type" :: Parser String
     case typ of
-      "ignore" -> return IgnoreRepetition
-      "penalize" -> PenalizeRepetition <$> v .: "factor"
-      "limit" -> LimitRepetition <$> v .: "limit"
+      "ignore"   -> return IgnoreRepetition
+      "penalize" -> do
+        factor <- v .: "factor"
+        return $ PenalizeRepetition factor
+      "limit"    -> do
+        limit <- v .: "limit"
+        return $ LimitRepetition limit
       _ -> fail "Invalid policy"
 
 instance FromJSON DatePolicy where
   parseJSON = withObject "DatePolicy" $ \v -> do
     typ <- v .: "type" :: Parser String
     case typ of
-      "ignore" -> return IgnoreDate
-      "penalty" -> DatePenalty <$> v .: "factor"
+      "ignore"  -> return IgnoreDate
+      "penalty" -> do
+        factor <- v .: "factor"
+        return $ DatePenalty factor
       _ -> fail "Invalid policy"
 
 instance FromJSON RatingFormula where
   parseJSON = withObject "RatingFormula" $ \v -> do
     typ <- v .: "type" :: Parser String
     case typ of
-      "average" -> return Average
+      "average"  -> return Average
       "weighted" -> return Weighted
-      "bayesian" -> Bayesian <$> v .: "prior"
+      "bayesian" -> do
+        prior <- v .: "prior"
+        return $ Bayesian prior
       _ -> fail "Invalid formula"
 
 instance FromJSON EvaluationRules where
-  parseJSON = withObject "EvaluationRules" $ \v ->
-    EvaluationRules <$> v .: "repetitionPolicy"
-                    <*> v .: "datePolicy"
-                    <*> v .: "ratingFormula"
+  parseJSON = withObject "EvaluationRules" $ \v -> do
+    repPol <- v .: "repetitionPolicy"
+    datePol <- v .: "datePolicy"
+    ratForm <- v .: "ratingFormula"
+    return $ EvaluationRules repPol datePol ratForm
 
 instance ToJSON ProductRating where
   toJSON (ProductRating prod count score pos neg helpful) = object
@@ -112,7 +124,7 @@ instance ToJSON ProductRating where
     , "positiveHighlights" .= pos
     , "negativeHighlights" .= neg
     , "mostHelpfulReview" .= helpful
-    ]
+    ] 
 
 --------------------------------------------------
 -- Функции загрузки JSON

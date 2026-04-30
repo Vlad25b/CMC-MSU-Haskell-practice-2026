@@ -44,7 +44,7 @@ data Review = Review
   , reviewText     :: String
   , sentimentOfRev :: Sentiment
   }
-  deriving (Show, Eq)
+  deriving (Show, Eq) -- 
 
 data Sentiment = Positive | Neutral | Negative
   deriving (Show, Eq)

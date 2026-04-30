@@ -39,7 +39,7 @@ buildDefectDict reviews =
      in DefectDictionary $ nub $ map reviewProduct $ filter (isDefect . reviewText) reviews
 
 groupReviews :: [Review] -> Map.Map String [Review]
-groupReviews = foldr (\r -> Map.insertWith (++) (reviewProduct r) [r]) Map.empty
+groupReviews = foldr (\r -> Map.insertWith (++) (reviewProduct r) [r]) Map.empty -- [(p1,[r1,r2,r3])]
 
 analyzeProduct :: EvaluationRules -> SentimentDictionary -> DefectDictionary -> Product -> [Review] -> Either AnalysisError ProductRating
 analyzeProduct rules dict defectDict prod reviews
@@ -107,7 +107,7 @@ findTopWordsBySentiment target rs dict =
         
         wordStemPairs = zip allOriginalWords allStemmedWords
         
-        wordSentiments = [(w, getStemSentiment stem dict) | (w, stem) <- wordStemPairs]
+        wordSentiments = [(w, getStemSentiment stem dict) | (w, stem) <- wordStemPairs] -- [(отличный, positive),()....]
         
         filtered = filter ((== target) . snd) wordSentiments
         
